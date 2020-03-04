@@ -8,7 +8,7 @@ package components;
 public class FitnessFunction {
 	
 	
-	public void calculateFitness(Specimen s) {
+	public double calculateFitness(Specimen s) {
 		throw new UnsupportedOperationException("### MUST OVERRIDE DEFAULT FITNESS FUNCTION ###");
 	}
 }
