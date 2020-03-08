@@ -39,17 +39,27 @@ public class TestExperiment {
 		controller.setTrait(1, new Trait("b-val", -12, 12));
 		controller.setTrait(2, new Trait("c-val", -12, 12));
 		
-		// create initial population
+		// create initial population and calculate fitnesses.
 		controller.initializePopulation();
 		
-		// calculate fitness of specimen in current population
-		controller.calculateFitnesses();
-		
 		// sort population by fitness
-		Arrays.sort(controller.getPopulation());
 		controller.printCurrentPopulation();
-		// controller.printAllSpecimens();
+		
+		// set max generations count - will run until fitness of 1 is achieved by default
+		controller.setMaxGenerationsCount(3);
+		
+		// set fitness threshold
+		controller.setFitnessThreshold(0.8);
 		
 		System.out.println("### Fittest Specimen ###\n" + controller.findFittestSpecimen().toString());
+		
+		// set truncation threshold
+		controller.setTruncationConstant(0.10);
+		
+		// begin 'evolution' loop
+		while(!controller.areEndConditionsMet()) {
+			controller.createNextGeneration(Controller.BREEDING_TRUNCATION);
+			controller.printCurrentPopulation();
+		}
 	}
 }
