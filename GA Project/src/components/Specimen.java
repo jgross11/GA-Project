@@ -1,6 +1,7 @@
 package components;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * @author jgross11@ycp.edu
@@ -9,33 +10,77 @@ import java.util.ArrayList;
  */
 public class Specimen implements Comparable<Specimen>{
 	private int id;
-	private ArrayList<Trait> traits;
+	private Trait[] traits;
 	private double fitness;
 	
+	
 	/**
-	 * Inits the specimen's fitness value and traits list.
-	 * @param id The ID used to identify this specimen.
+	 * Inits the specimen's fitness value and traits list, and assigns the Specimen its id.
+	 * @param id The Specimen's id. 
+	 * @param numTraits The number of traits the Specimen will contain. 
 	 */
-	public Specimen(int id) {
+	public Specimen(int id, int numTraits) {
 		this.id = id;
 		fitness = 0;
-		traits = new ArrayList<Trait>();
+		traits = new Trait[numTraits];
+		for(int i = 0; i < numTraits; i++) {
+			traits[i] = null;
+		}
 	}
 	
 	/**
-	 * 
+	 * Inits the specimen's fitness value and traits list.
+	 * @param numTraits The number of traits this specimen will contain. 
+	 */
+	public Specimen(int numTraits) {
+		this.id = -1;
+		fitness = 0;
+		traits = new Trait[numTraits];
+		for(int i = 0; i < numTraits; i++) {
+			traits[i] = null;
+		}
+	}
+	
+	/**
 	 * @return the ID of this specimen
 	 */
-	public int getName() {
+	public int getId() {
 		return id;
 	}
 	
 	/**
-	 * Adds a specific {@link Trait} to this specimen's trait list
-	 * @param t The {@link Trait} to add. 
+	 * Sets the id of the Specimen.
+	 * @param id The id to assign to this Specimen
 	 */
-	public void addTrait(Trait t) {
-		traits.add(t);
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	/**
+	 * Sets the number of traits this Specimen will contain. 
+	 * @param numTraits The number of traits this Specimen will contain. 
+	 */
+	public void setNumTraits(int numTraits) {
+		traits = new Trait[numTraits];
+		for(int i = 0; i < numTraits; i++) {
+			traits[i] = null;
+		}
+	}
+	
+	/**
+	 * @return the number of traits this Specimen contains.
+	 */
+	public int getNumTraits() {
+		return traits.length;
+	}
+	
+	/**
+	 * Adds a given trait at a given index in the Trait array. 
+	 * @param index The index in which to store the given Trait.
+	 * @param t The Trait to store. 
+	 */
+	public void addTraitAtIndex(int index, Trait t) {
+		traits[index] = t;
 	}
 	
 	/**
@@ -43,13 +88,13 @@ public class Specimen implements Comparable<Specimen>{
 	 * @return The {@link Trait} at the given index. 
 	 */
 	public Trait getTrait(int index) {
-		return traits.get(index);
+		return traits[index];
 	}
 	
 	/**
 	 * @return this specimen's {@link Trait} list.
 	 */
-	public ArrayList<Trait> getTraitList(){
+	public Trait[] getTraitList(){
 		return traits;
 	}
 	
@@ -88,5 +133,57 @@ public class Specimen implements Comparable<Specimen>{
 	 */
 	public int compareTo(Specimen other) {
 		return fitness > other.fitness ? 1 : fitness < other.fitness ? -1 : 0;
+	}
+	
+	/**
+	 * Creates a new Specimen that contains approximately 50% of this Specimen's traits and 50% of the given Specimen's traits,
+	 * with some random traits being generated depending on the given mutationRate. 
+	 * @param other The other Specimen whose traits will be mixed with this one in the child Specimen.
+	 * @param mutationRate The rate at which a trait from a child will take a random value, rather than one of its parents. 
+	 * @return A Specimen whose traits are comprised approximately 50-50 with this Specimen and the given Specimen. 
+	 */
+	
+	// TODO: ### IMPLEMENT TRAIT MUTATION ###
+	public Specimen breed(Specimen other, double mutationRate) {
+		Random rand = new Random();
+		// create trait index array
+		Specimen child = new Specimen(traits.length);
+		int numTraits = traits.length;
+		// NOTE: this would change if specimen will have more than two parents
+		
+		// parent one count
+		int p1Count = numTraits / 2;
+		
+		// parent two count
+		int p2Count = numTraits / 2;
+		
+		int traitIndex = 0;
+		while(p1Count > 0 && p2Count > 0) {
+			int parentThatGives = rand.nextInt(2);
+			if(parentThatGives == 0) {
+				child.addTraitAtIndex(traitIndex, getTrait(traitIndex));
+				p1Count --;
+			} 
+			else {
+				child.addTraitAtIndex(traitIndex, other.getTrait(traitIndex));
+				p2Count --;
+			}
+			traitIndex++;
+		}
+		if(p1Count == 0) {
+			for(int i = traitIndex; i < numTraits; i++) {
+				child.addTraitAtIndex(i, other.getTrait(i));
+			}
+		}
+		else if(p2Count == 0) {
+			for(int i = traitIndex; i < numTraits; i++) {
+				child.addTraitAtIndex(i, getTrait(i));
+			}
+		}
+		
+		for(int i = 0; i < child.getNumTraits(); i++) {
+			System.out.println(child.getTrait(i));
+		}
+		return child;
 	}
 }
