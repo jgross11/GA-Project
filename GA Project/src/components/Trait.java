@@ -17,7 +17,7 @@ public class Trait {
 		this.name = name;
 		this.minValue = minValue;
 		this.maxValue = maxValue;
-		// TODO determine way to make this exclusive to both val = min and val = max cases
+		// TODO determine way to make this exclude both val = min and val = max cases
 		this.value = minValue + (new Random()).nextDouble()*(maxValue-minValue+0.0000001);
 	}
 	
