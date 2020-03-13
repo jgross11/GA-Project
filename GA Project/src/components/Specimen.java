@@ -157,15 +157,22 @@ public class Specimen implements Comparable<Specimen>{
 		// parent two count
 		int p2Count = numTraits / 2;
 		
+		int mutationChance = (int) (mutationRate * 100);
+		
+		System.out.println(mutationChance);
+		
 		int traitIndex = 0;
 		while(p1Count > 0 && p2Count > 0) {
 			int parentThatGives = rand.nextInt(2);
+			
+			// generate random number between 1 and 100 inclusive to determine if mutation occurs
+			int mutationNumber = rand.nextInt(100)+1;
 			if(parentThatGives == 0) {
-				child.addTraitAtIndex(traitIndex, getTrait(traitIndex));
+				child.addTraitAtIndex(traitIndex, (mutationNumber <= mutationChance) ? new Trait(this.traits[traitIndex]) : getTrait(traitIndex));
 				p1Count --;
 			} 
 			else {
-				child.addTraitAtIndex(traitIndex, other.getTrait(traitIndex));
+				child.addTraitAtIndex(traitIndex, (mutationNumber <= mutationChance) ? new Trait(other.traits[traitIndex]) : other.getTrait(traitIndex));
 				p2Count --;
 			}
 			traitIndex++;
