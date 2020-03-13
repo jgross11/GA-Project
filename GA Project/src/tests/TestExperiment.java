@@ -1,7 +1,12 @@
-package components;
+package tests;
 
 import java.util.Arrays;
 import java.util.Comparator;
+
+import components.Controller;
+import components.FitnessFunction;
+import components.Specimen;
+import components.Trait;
 
 	
 /**
@@ -46,15 +51,18 @@ public class TestExperiment {
 		controller.printCurrentPopulation();
 		
 		// set max generations count - will run until fitness of 1 is achieved by default
-		controller.setMaxGenerationsCount(3);
+		// controller.setMaxGenerationsCount(10);
 		
 		// set fitness threshold
-		controller.setFitnessThreshold(0.8);
+		controller.setFitnessThreshold(0.999);
 		
 		System.out.println("### Fittest Specimen ###\n" + controller.findFittestSpecimen().toString());
 		
 		// set truncation threshold
 		controller.setTruncationConstant(0.10);
+		
+		// set mutation rate
+		controller.setMutationRate(0.15);
 		
 		// begin 'evolution' loop
 		while(!controller.areEndConditionsMet()) {
