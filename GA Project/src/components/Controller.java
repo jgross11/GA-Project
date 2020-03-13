@@ -265,7 +265,7 @@ public class Controller {
 						
 						// fix case where p1 == p2, occurs with probability 1 / lowestIndex
 						if(p2Index == p1Index) {
-							p2Index = (p2Index + 1 + rand.nextInt(lowestIndex - 1)) % lowestIndex;
+							p2Index = (p2Index + 1 + rand.nextInt(lowestIndex)) % lowestIndex;
 						}
 						
 						// breed p1 Specimen with p2 Specimen and store in next generation
@@ -293,6 +293,11 @@ public class Controller {
 		
 		// sort next gen by fitness
 		Arrays.sort(newGeneration);
+		
+		// reassign most fit individual if necessary
+		if(newGeneration[newGeneration.length - 1].getFitness() > currentFittestSpecimen.getFitness()) {
+			currentFittestSpecimen = newGeneration[newGeneration.length - 1];
+		}
 		
 		// make next generation the current population
 		currentPopulation = newGeneration;
