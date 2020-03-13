@@ -46,4 +46,25 @@ public class Trait {
 	public double getValue() {
 		return value;
 	}
+	
+	/**
+	 * @return the name of this trait.
+	 */
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * @return the minimum value this trait can have.
+	 */
+	public double getMinValue() {
+		return minValue;
+	}
+	
+	/**
+	 * @return the maximum value this trait can have.
+	 */
+	public double getMaxValue() {
+		return maxValue;
+	}
 }
